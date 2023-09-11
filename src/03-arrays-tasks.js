@@ -168,7 +168,6 @@ function getHead(arr, n) {
   return arr.splice(0, n);
 }
 
-
 /**
  * Returns the n last items of the specified array
  *
@@ -204,8 +203,8 @@ function getTail(arr, n) {
  *    +'20,21,22,23,24\n'
  *    +'30,31,32,33,34'
  */
-function toCsvText(/* arr */) {
-  throw new Error('Not implemented');
+function toCsvText(arr) {
+  return arr.map((elem) => `${elem.join(',')}\n`).join('').slice(0, -1);
 }
 
 /**
@@ -273,8 +272,11 @@ function getSecondItems(arr) {
  *  [ 'a', 'b', 'c', null ] => [ 'a', 'b','b', 'c','c','c',  null,null,null,null ]
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
-function propagateItemsByPositionIndex(/* arr */) {
-  throw new Error('Not implemented');
+function propagateItemsByPositionIndex(arr) {
+  return arr.reduce((acc, elem, index) => {
+    const repeatedItems = Array(index + 1).fill(elem);
+    return acc.concat(repeatedItems);
+  }, []);
 }
 
 
@@ -331,9 +333,22 @@ function getPositivesCount(arr) {
  *   [ 'one','one','one','zero' ]     => [ 'zero','one','one','one' ]
  */
 function sortDigitNamesByNumericOrder(/* arr */) {
+  // const values = new Map([
+  //   ['zero', 0],
+  //   ['one', 1],
+  //   ['two', 2],
+  //   ['three', 3],
+  //   ['four', 4],
+  //   ['five', 5],
+  //   ['six', 6],
+  //   ['seven', 7],
+  //   ['eight', 8],
+  //   ['nine', 9],
+  // ]);
+  // const newArr = arr.map((elem) => values.get(elem));
+  // newArr.sort((a, b) => a - b);
   throw new Error('Not implemented');
 }
-
 /**
  * Returns the sum of all items in the specified array of numbers
  *
@@ -363,8 +378,10 @@ function getItemsSum(arr) {
  *  [ -1, 'false', null, 0 ] => 2
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
-function getFalsyValuesCount(/* arr */) {
-  throw new Error('Not implemented');
+function getFalsyValuesCount(arr) {
+  if (arr.length === 0) return 0;
+  const result = arr.filter((elem) => (Boolean(elem) === false));
+  return result.length;
 }
 
 /**
@@ -482,8 +499,8 @@ function getIntervalArray(start, end) {
  *   [ 'a', 'a', 'a', 'a' ]  => [ 'a' ]
  *   [ 1, 1, 2, 2, 3, 3, 4, 4] => [ 1, 2, 3, 4]
  */
-function distinct(/* arr */) {
-  throw new Error('Not implemented');
+function distinct(arr) {
+  return Array.from(new Set(arr));
 }
 
 /**
