@@ -67,8 +67,11 @@ function getFactorial(n) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  if (n1 === n2) {
+    return n1;
+  }
+  return n2 + getSumBetweenNumbers(n1, n2 - 1);
 }
 
 
@@ -124,8 +127,12 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  return !(rect1.left > (rect2.width + rect2.left)
+    || (rect2.left > (rect1.width + rect1.left))
+    || (rect1.top > (rect2.height + rect2.left))
+    || (rect2.top > (rect1.height + rect1.left))
+  );
 }
 
 
@@ -155,8 +162,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return ((circle.center.x - point.x) * (circle.center.x - point.x)
+    + (circle.center.y - point.y) * (circle.center.y - point.y))
+    < (circle.radius * circle.radius);
 }
 
 
@@ -198,8 +207,11 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const firstBracket = isStartIncluded ? '[' : '(';
+  const lastBracket = isEndIncluded ? ']' : ')';
+  const middle = (a < b) ? `${a}, ${b}` : `${b}, ${a}`;
+  return firstBracket + middle + lastBracket;
 }
 
 
@@ -276,8 +288,11 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const newArr = num.toString().split('').reduce((sum, current) => +sum + +current, 0);
+  if (newArr > 9) {
+    return getDigitalRoot(newArr);
+  } return Number(newArr);
 }
 
 
