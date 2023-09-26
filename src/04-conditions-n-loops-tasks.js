@@ -180,8 +180,13 @@ function isInsideCircle(circle, point) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const chars = str.split('');
+  const charMap = new Map();
+  chars.map((char) => (charMap.has(char) ? charMap.set(char, (charMap.get(char) + 1))
+    : charMap.set(char, 1)));
+  const uniqueKeys = Array.from(charMap.keys()).filter((key) => charMap.get(key) === 1);
+  return uniqueKeys.length > 0 ? uniqueKeys[0] : null;
 }
 
 
@@ -270,9 +275,14 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const reversedCCN = ccn.toString().split('').reverse();
+  const dubbled = reversedCCN.map((element, index) => (index % 2 === 0 ? element : element * 2));
+  const summed = dubbled.map((element) => (element.toString().length > 1 ? element.toString().split('').reduce((a, b) => +a + +b) : element));
+  const result = summed.reduce((a, b) => +a + +b);
+  return result % 10 === 0;
 }
+
 
 /**
  * Returns the digital root of integer:
@@ -317,8 +327,31 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const closeBrackets = new Set([']', ')', '}', '>']);
+  const bracketsConfig = {
+    '[': ']',
+    '(': ')',
+    '{': '}',
+    '<': '>',
+  };
+
+  if (str.length % 2 !== 0) {
+    return false;
+  }
+
+  const result = str.split('').reduce((accumulator, item) => {
+    if (closeBrackets.has(item)) {
+      if (bracketsConfig[accumulator[accumulator.length - 1]] === item) {
+        accumulator.pop();
+      }
+    } else {
+      accumulator.push(item);
+    }
+    return accumulator;
+  }, []);
+
+  return result.length === 0;
 }
 
 
@@ -342,8 +375,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -359,8 +392,16 @@ function toNaryString(/* num, n */) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const firstPath = pathes[0].split('/');
+  const commonPath = firstPath.reduce((accumulator, element, index) => {
+    if (pathes.every((path) => path.split('/')[index] === element)) {
+      accumulator.push(element);
+    }
+    return accumulator;
+  }, []);
+
+  return commonPath.map((elem) => (elem === '' ? '/' : `${elem}/`)).join('');
 }
 
 
@@ -382,8 +423,15 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const result = [];
+  let mult = '';
+  mult = (row, matrix) => matrix[0].map((element, j) => row.reduce((sum, value, k) => sum + value
+  * matrix[k][j], 0));
+  m1.forEach((row1) => {
+    result.push(mult(row1, m2));
+  });
+  return result;
 }
 
 
@@ -417,8 +465,38 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const isWinningRow = (row, value) => (row.length < 3 ? false
+    : row.every((cell) => cell === value));
+
+  const isXrowWinner = position.map((row) => isWinningRow(row, 'X')).includes(true);
+  const isOrowWinner = position.map((row) => isWinningRow(row, '0')).includes(true);
+
+  const diagonal1 = [position[0][0], position[1][1], position[2][2]];
+  const diagonal2 = [position[0][2], position[1][1], position[2][0]];
+
+  const isXdiagonalWinner = isWinningRow(diagonal1, 'X') || isWinningRow(diagonal2, 'X');
+
+  const isOdiagonalWinner = isWinningRow(diagonal1, '0') || isWinningRow(diagonal2, '0');
+
+  const verticalRow1 = [position[0][0], position[1][0], position[2][0]];
+  const verticalRow2 = [position[0][1], position[1][1], position[2][1]];
+  const verticalRow3 = [position[0][2], position[1][2], position[2][2]];
+
+  const isXvertical1Winner = isWinningRow(verticalRow1, 'X') || isWinningRow(verticalRow2, 'X') || isWinningRow(verticalRow3, 'X');
+
+  const isOvertical1Winner = isWinningRow(verticalRow1, '0') || isWinningRow(verticalRow2, '0') || isWinningRow(verticalRow3, '0');
+
+  let res;
+  if (isXrowWinner || isXdiagonalWinner || isXvertical1Winner) {
+    res = 'X';
+  }
+
+  if (isOrowWinner || isOdiagonalWinner || isOvertical1Winner) {
+    res = '0';
+  }
+
+  return res;
 }
 
 
